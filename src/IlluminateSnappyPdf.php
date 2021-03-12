@@ -18,7 +18,7 @@ class IlluminateSnappyPdf extends Pdf {
 	}
 
 	/** {@inheritdoc} */
-	protected function checkProcessStatus(int $status, string $stdout, string $stderr, string $command): void
+	protected function checkProcessStatus($status, $stdout, $stderr, $command)
 	{
 		// Skip error when wkhtmltopdf can't load some resources from broken links
 		// actually library generate file without images, but return stderr with non success exit code
