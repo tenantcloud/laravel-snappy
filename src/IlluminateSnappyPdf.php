@@ -17,6 +17,18 @@ class IlluminateSnappyPdf extends Pdf {
 		$this->fs = $fs;
 	}
 
+	/** {@inheritdoc} */
+	protected function checkProcessStatus(int $status, string $stdout, string $stderr, string $command): void
+	{
+		// Skip error when wkhtmltopdf can't load some resources from broken links
+		// actually library generate file without images, but return stderr with non success exit code
+		if ($status === 1 && strpos($stderr, 'ContentNotFoundError') !== false) {
+			return;
+		}
+
+		parent::checkProcessStatus($status, $stdout, $stderr, $command);
+	}
+
     /**
      * Wrapper for the "file_get_contents" function
      *
