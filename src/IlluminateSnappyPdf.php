@@ -2,6 +2,7 @@
 
 use Knp\Snappy\Pdf;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Str;
 
 class IlluminateSnappyPdf extends Pdf {
 
@@ -22,7 +23,7 @@ class IlluminateSnappyPdf extends Pdf {
 	{
 		// Skip error when wkhtmltopdf can't load some resources from broken links
 		// actually library generate file without images, but return stderr with non success exit code
-		if ($status === 1 && strpos($stderr, 'ContentNotFoundError') !== false) {
+		if ($status === 1 && Str::contains($stderr, ['ContentNotFoundError', 'ContentOperationNotPermittedError'])) {
 			return;
 		}
 
@@ -112,5 +113,5 @@ class IlluminateSnappyPdf extends Pdf {
     {
         return $this->fs->makeDirectory($pathname, 0777, true, true);
     }
-   
+
 }
